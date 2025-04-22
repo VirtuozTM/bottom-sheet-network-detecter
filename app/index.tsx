@@ -6,24 +6,23 @@ import BottomSheetInternetModal, {
   type BottomSheetInternetModalRef,
 } from "@/components/BottomSheetInternetModal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useStableNetInfo from "@/hooks/useStableNetInfo";
 export default function Index() {
-  const [isConnected, setIsConnected] = useState(false);
-  const [connectionType, setConnectionType] = useState<string>("");
+  const netInfo = useStableNetInfo(1000); // 1 s de “grâce”
+  const isConnected = !!netInfo?.isConnected;
+  const connectionType = netInfo?.type ?? "unknown";
   const internetModalRef = useRef<BottomSheetInternetModalRef>(null);
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      setIsConnected(!!state.isConnected);
-      setConnectionType(state.type || "unknown");
-      if (!state.isConnected) {
-        internetModalRef.current?.present();
-      } else {
-        internetModalRef.current?.dismiss();
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+    if (netInfo === null) return;
+
+    if (isConnected) {
+      internetModalRef.current?.dismiss();
+    } else {
+      internetModalRef.current?.present();
+    }
+  }, [isConnected]);
 
   return (
     <View
