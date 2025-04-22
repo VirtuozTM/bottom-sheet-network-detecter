@@ -17,7 +17,7 @@ export default function Index() {
   useEffect(() => {
     if (netInfo === null) return;
 
-    if (!isConnected) {
+    if (isConnected) {
       internetModalRef.current?.dismiss();
     } else {
       internetModalRef.current?.present();
