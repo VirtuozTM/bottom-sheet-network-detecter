@@ -1,7 +1,7 @@
 # 📶 Bottom-Sheet-Network-Detecter
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/your-video-link.mp4"/>
+  <video src="https://github.com/user-attachments/assets/6081d457-e6c6-474e-8b2a-d12a5eae730d.mp4"/>
 </p>
 
 ## 📌 Objectif
