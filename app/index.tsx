@@ -1,14 +1,14 @@
-import { StatusBar, Text, View } from "react-native";
-import NetInfo from "@react-native-community/netinfo";
-import { useRef, useState } from "react";
+import { Text, View } from "react-native";
+import { useRef } from "react";
 import { useEffect } from "react";
 import BottomSheetInternetModal, {
   type BottomSheetInternetModalRef,
 } from "@/components/BottomSheetInternetModal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useStableNetInfo from "@/hooks/useStableNetInfo";
+
 export default function Index() {
-  const netInfo = useStableNetInfo(1000); // 1 s de “grâce”
+  const netInfo = useStableNetInfo(1000);
   const isConnected = !!netInfo?.isConnected;
   const connectionType = netInfo?.type ?? "unknown";
   const internetModalRef = useRef<BottomSheetInternetModalRef>(null);
@@ -17,7 +17,7 @@ export default function Index() {
   useEffect(() => {
     if (netInfo === null) return;
 
-    if (isConnected) {
+    if (!isConnected) {
       internetModalRef.current?.dismiss();
     } else {
       internetModalRef.current?.present();
@@ -34,7 +34,6 @@ export default function Index() {
       }}
     >
       <Text style={{ fontSize: 35, fontWeight: "bold" }}>Network Monitor</Text>
-      {/* Status */}
       <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>STATUS</Text>
       <View
         style={{
@@ -59,7 +58,7 @@ export default function Index() {
           {isConnected ? "Connected" : "Disconnected"}
         </Text>
       </View>
-      {/* Connection Type */}
+
       <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>
         CONNECTION TYPE
       </Text>

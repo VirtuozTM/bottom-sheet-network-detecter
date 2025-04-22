@@ -3,7 +3,6 @@ import React, {
   useCallback,
   useImperativeHandle,
   useRef,
-  useState,
 } from "react";
 import {
   StyleSheet,
@@ -30,7 +29,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-import { GlobeX, WifiX } from "phosphor-react-native";
+import { WifiX } from "phosphor-react-native";
 import { StatusBar } from "expo-status-bar";
 
 export type BottomSheetInternetModalRef = {
@@ -51,7 +50,6 @@ const BottomSheetInternetModalRef = forwardRef<
   const height = useSharedValue(0);
   const transform = useSharedValue(0);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const [showGlobeIcon, setShowGlobeIcon] = useState(false);
 
   useImperativeHandle(ref, () => ({
     present: () => bottomSheetRef.current?.present(),
@@ -61,7 +59,6 @@ const BottomSheetInternetModalRef = forwardRef<
   const handleClose = useCallback(() => {
     transform.value = height.value;
     bottomSheetRef.current?.dismiss();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transform]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -105,19 +102,6 @@ const BottomSheetInternetModalRef = forwardRef<
     </>
   );
 
-  const iconStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(showGlobeIcon ? 0 : 1),
-    };
-  });
-
-  const globeIconStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(showGlobeIcon ? 1 : 0),
-      position: "absolute",
-    };
-  });
-
   const renderContent = useCallback(() => {
     return (
       <Animated.View
@@ -138,14 +122,8 @@ const BottomSheetInternetModalRef = forwardRef<
             marginBottom: 10,
           }}
         >
-          <View style={{ position: "relative", width: 90, height: 90 }}>
-            <Animated.View style={iconStyle}>
-              <WifiX size={90} />
-            </Animated.View>
-            <Animated.View style={[globeIconStyle, { top: 0 }]}>
-              <GlobeX size={90} />
-            </Animated.View>
-          </View>
+          <WifiX size={90} />
+
           <Text
             style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}
           >
